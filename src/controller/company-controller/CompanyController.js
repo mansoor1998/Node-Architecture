@@ -1,4 +1,4 @@
-const { CrudAppController } = require("./CRUDAppController");
+const { CrudAppController } = require("../CRUDAppController");
 
 module.exports = (dependencies) => {
 
@@ -18,6 +18,8 @@ module.exports = (dependencies) => {
     }
 }
 
+
+// call another function refrence which takes all functions and add it into a route.
 
 /*
 module.exports = class CompanyController { //extends CrudAppController{

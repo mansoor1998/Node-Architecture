@@ -3,26 +3,21 @@ const CrudAppController = (repository) => {
         repository.GetAll();
         res.send({ "message": "This is a get all function" });
     }
-    GetAll.Method = 'GET';
 
     GetById = (req, res) => {
     }
-    GetById.Method = 'GET';
 
     Create = (req, res) => {
         res.send({ "message": "This is a Create function" });
     }
-    Create.Method = 'POST';
 
     Update = (req, res) => {
-
+        res.send({ "message": "This is a update function" });
     }
-    Create.Method = 'PUT';
 
     Delete = (req, res) => {
-
+        res.send({ "message": "This is a Delete function"});
     }
-    Delete.Method = 'DELETE';
 
     return {
         GetAll,

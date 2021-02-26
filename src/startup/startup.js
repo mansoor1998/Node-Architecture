@@ -1,26 +1,16 @@
+"use strict"
 const express = require('express');
 const bodyParser = require("body-parser");
 const apiRoutes = require('../framework/routes/index');
 const projectDependencies = require('./projectDependencies');
 
 
-// Application
+// Application.
 const app = express();
 const port = process.env.PORT || 3000;
 
 
 function initDataBase(){
-    /*return typeorm.createConnection({
-        type: "mssql",
-        host: "localhost",
-        port: 1433,
-        database: "checking",
-        entitySchemas: [
-            require("../model/Company"),
-        ]
-    }).then(function (connection){
-        console.log("wao");
-    });*/
     return new Promise( (res, rej) => res(true) );
 }
 
@@ -38,5 +28,6 @@ projectDependencies.DatabaseService.initDatabase().then(() => {
     app.listen(port, () => console.log(`The application started at PORT: ${port}`));
 
 }, (err) => {
+    console.log(err.message);
     console.log('Failed to connect to DB');
-}).catch( (err) => console.log(err.message) )
+}).catch( (err) => console.log(err.message) );

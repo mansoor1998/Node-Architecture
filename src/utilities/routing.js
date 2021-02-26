@@ -10,7 +10,29 @@ const setRoute = (router, routerFunction, routeMethod ,...routeMiddleware) => {
     else throw new Error ( "Method name " + methodName + " has wrong routing method");
 }
 
-const setAllRoutes = (router, routerFunctionArr, ...routerMiddleware) => {
+const setAllRoutes = (routerObj, ...routerMiddleware) => {
+    const customRouter = require('express')();
+
+    for(let func in routerObj){
+        let funcName = routerObj[func].name;
+
+        if ( (/^(create|post)/i).test(funcName) ){
+            customRouter.post( `/${funcName}`, routerMiddleware , routerObj[func] );
+        } else if( (/^(update|put)/i).test(funcName) ){
+            customRouter.put( `/${funcName}`, routerMiddleware, routerObj[func] )
+        } else if ( (/^(delete)/i).test(funcName) ){
+            customRouter.delete(`/${funcName}`, routerMiddleware, routerObj[func]);
+        } else if ( (/^(get)/i).test(funcName) ) {
+            customRouter.get( `/${funcName}`, routerMiddleware, routerObj[func] );
+        } else if( (/^(getbyid)/i).test(funcName) ) {
+            customRouter.get(`/${funcName}/:id`, routerMiddleware, routerObj[func])
+        } else {
+            const methodParseError = new Error ('MethodParseError');
+            methodParseError.message = 'cannot parse function ' + funcName + '. Should start with get, post, put, delete'
+        }
+    }
+
+    return customRouter;
 }
 
 const setCrudRoutes = (router, routerObj, ...routerMiddleware) => {
@@ -20,11 +42,15 @@ const setCrudRoutes = (router, routerObj, ...routerMiddleware) => {
     router.delete('/Delete', routerObj.Delete)
 }
 
+const setDynamicRoutes = (router, routerObj) => {
+
+}
+
 const getControllerClassName = (controllerClass) => {
     let classNameArr = controllerClass.name.split(/Controller$/);
     if(classNameArr.length == 2)
         return classNameArr[0];
-    else return null;
+    else throw new Error('No prefix controller');
 }
 
 module.exports = { setRoute, getControllerClassName, setAllRoutes, setCrudRoutes };
